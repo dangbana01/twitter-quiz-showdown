@@ -14,13 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      quiz_sessions: {
+        Row: {
+          avatar_url: string | null
+          completed_at: string
+          completion_time: number
+          created_at: string
+          display_name: string
+          id: string
+          score: number
+          total_questions: number
+          twitter_username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          completed_at?: string
+          completion_time: number
+          created_at?: string
+          display_name: string
+          id?: string
+          score?: number
+          total_questions?: number
+          twitter_username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          completed_at?: string
+          completion_time?: number
+          created_at?: string
+          display_name?: string
+          id?: string
+          score?: number
+          total_questions?: number
+          twitter_username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cleanup_old_quiz_sessions: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      get_current_leaderboard: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string
+          completion_time: number
+          display_name: string
+          rank: number
+          score: number
+          time_display: string
+          twitter_username: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
