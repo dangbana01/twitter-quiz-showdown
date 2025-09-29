@@ -9,182 +9,122 @@ export interface Question {
 export const quizQuestions: Question[] = [
   {
     id: 1,
-    question: "What is the primary characteristic that defines artificial general intelligence (AGI)?",
+    question: "What is the primary purpose of Sentient Chat?",
     answers: [
-      "The ability to perform one specific task better than humans",
-      "The ability to understand, learn, and apply intelligence across diverse domains like humans",
-      "The ability to process data faster than any human",
-      "The ability to replicate human emotions perfectly"
+      "To provide AI-powered conversational experiences",
+      "To create simple chatbots",
+      "To replace human customer service",
+      "To analyze social media sentiment"
     ],
-    correctAnswer: 1,
-    category: "AI Fundamentals"
+    correctAnswer: 0,
+    category: "Sentient Fundamentals"
   },
   {
     id: 2,
-    question: "Which philosophical concept deals with the question of whether machines can truly think or only simulate thinking?",
+    question: "Which technology foundation does Sentient leverage for its AI capabilities?",
     answers: [
-      "The Chinese Room Argument",
-      "The Turing Test",
-      "The Hard Problem of Consciousness",
-      "All of the above"
+      "Rule-based systems only",
+      "Advanced machine learning and neural networks",
+      "Simple keyword matching",
+      "Hardcoded response templates"
     ],
-    correctAnswer: 3,
-    category: "Philosophy of Mind"
+    correctAnswer: 1,
+    category: "Sentient Technology"
   },
   {
     id: 3,
-    question: "What is the 'alignment problem' in AI safety?",
+    question: "What makes Sentient Chat different from traditional chatbots?",
     answers: [
-      "Making sure AI systems have proper data alignment",
-      "Ensuring AI goals align with human values and intentions",
-      "Aligning different AI models to work together",
-      "Synchronizing AI processing with human thinking speed"
+      "It only works in English",
+      "It requires manual programming for each response",
+      "It provides contextual, intelligent conversations with learning capabilities",
+      "It can only answer pre-defined questions"
     ],
-    correctAnswer: 1,
-    category: "AI Safety"
+    correctAnswer: 2,
+    category: "Sentient Features"
   },
   {
     id: 4,
-    question: "Which of these is NOT a commonly proposed test for machine consciousness?",
+    question: "What is a key feature of Sentient's conversation handling?",
     answers: [
-      "Integrated Information Theory (IIT) metrics",
-      "Global Workspace Theory indicators",
-      "The Mirror Test for self-recognition",
-      "The Bitcoin Mining Test"
+      "Limited to yes/no responses",
+      "Context-aware dialogue management",
+      "Random response generation",
+      "Single-turn interactions only"
     ],
-    correctAnswer: 3,
-    category: "Consciousness"
+    correctAnswer: 1,
+    category: "Sentient Capabilities"
   },
   {
     id: 5,
-    question: "What does 'emergence' mean in the context of complex AI systems?",
+    question: "How does Sentient Chat approach natural language understanding?",
     answers: [
-      "When AI systems suddenly become faster",
-      "When complex behaviors arise from simple interactions between components",
-      "When AI systems start to require emergency shutdown",
-      "When AI systems begin to emerge from their programming environment"
+      "Using only keyword detection",
+      "Through advanced NLP and semantic analysis",
+      "By matching exact phrases only",
+      "Using simple pattern recognition"
     ],
     correctAnswer: 1,
-    category: "Complexity Theory"
+    category: "Sentient NLP"
   },
   {
     id: 6,
-    question: "Which neural network architecture is most commonly associated with language understanding in modern AI?",
+    question: "What capability allows Sentient to maintain conversation flow?",
     answers: [
-      "Convolutional Neural Networks (CNNs)",
-      "Recurrent Neural Networks (RNNs)",
-      "Transformer Architecture",
-      "Perceptron Networks"
+      "Memory persistence and context retention",
+      "Restarting conversations frequently",
+      "Ignoring previous messages",
+      "Using only current message context"
     ],
-    correctAnswer: 2,
-    category: "Technical AI"
+    correctAnswer: 0,
+    category: "Sentient Memory"
   },
   {
     id: 7,
-    question: "What is the 'hard takeoff' scenario in AI development?",
+    question: "Which aspect of AI consciousness does Sentient Chat explore?",
     answers: [
-      "When AI development requires significant hardware resources",
-      "A rapid, exponential improvement in AI capabilities once a threshold is reached",
-      "When AI systems are difficult to shut down",
-      "The process of launching AI satellites into space"
+      "Basic automation only",
+      "Self-awareness and adaptive learning",
+      "Simple response matching",
+      "Predetermined decision trees"
     ],
     correctAnswer: 1,
-    category: "AI Development"
+    category: "Sentient Consciousness"
   },
   {
     id: 8,
-    question: "In the context of machine consciousness, what is 'qualia'?",
+    question: "What is Sentient's approach to personalization?",
     answers: [
-      "The quality assurance process for AI systems",
-      "The subjective, experiential qualities of mental states",
-      "A type of quantum computing used in AI",
-      "The quantified learning ability of machines"
+      "One-size-fits-all responses",
+      "Learning user preferences and adapting communication style",
+      "Using the same personality for everyone",
+      "No personalization features"
     ],
     correctAnswer: 1,
-    category: "Philosophy of Mind"
+    category: "Sentient Personalization"
   },
   {
     id: 9,
-    question: "What is the primary challenge with current large language models regarding truthfulness?",
+    question: "How does Sentient Chat handle complex multi-turn conversations?",
     answers: [
-      "They process information too slowly",
-      "They can generate plausible-sounding but factually incorrect information",
-      "They can only understand one language at a time",
-      "They require too much computational power"
+      "By forgetting previous context",
+      "Using sophisticated dialogue state tracking",
+      "Limiting conversations to single exchanges",
+      "Requiring users to repeat information"
     ],
     correctAnswer: 1,
-    category: "AI Limitations"
+    category: "Sentient Dialogue"
   },
   {
     id: 10,
-    question: "Which concept describes the hypothetical point where AI becomes capable of recursive self-improvement?",
+    question: "What represents the ultimate goal of Sentient AI technology?",
     answers: [
-      "The Singularity",
-      "The Convergence",
-      "The Recursion Point",
-      "The Bootstrap Paradox"
-    ],
-    correctAnswer: 0,
-    category: "Future AI"
-  },
-  {
-    id: 11,
-    question: "What is 'few-shot learning' in machine learning?",
-    answers: [
-      "Learning that requires only a few shots of espresso",
-      "The ability to learn new tasks with very few examples",
-      "A type of reinforcement learning with limited attempts",
-      "Learning that happens in a few seconds"
+      "Replacing all human interaction",
+      "Creating truly intelligent, empathetic AI companions",
+      "Building simple task automation",
+      "Generating basic text responses"
     ],
     correctAnswer: 1,
-    category: "Machine Learning"
-  },
-  {
-    id: 12,
-    question: "In AI ethics, what does 'value alignment' specifically refer to?",
-    answers: [
-      "Aligning the monetary value of AI development",
-      "Ensuring AI systems pursue goals consistent with human moral values",
-      "Balancing the cost-benefit analysis of AI projects",
-      "Aligning different stakeholder interests in AI companies"
-    ],
-    correctAnswer: 1,
-    category: "AI Ethics"
-  },
-  {
-    id: 13,
-    question: "What is the main difference between 'artificial narrow intelligence' (ANI) and 'artificial general intelligence' (AGI)?",
-    answers: [
-      "ANI is faster, AGI is smarter",
-      "ANI excels at specific tasks, AGI matches human-level performance across all cognitive tasks",
-      "ANI uses less power, AGI uses more power",
-      "ANI is older technology, AGI is newer technology"
-    ],
-    correctAnswer: 1,
-    category: "AI Classification"
-  },
-  {
-    id: 14,
-    question: "Which phenomenon describes when an AI system exhibits unexpected capabilities not explicitly programmed?",
-    answers: [
-      "Algorithmic drift",
-      "Emergent behavior",
-      "System overflow",
-      "Neural cascade"
-    ],
-    correctAnswer: 1,
-    category: "AI Behavior"
-  },
-  {
-    id: 15,
-    question: "In the context of potential machine sentience, what is the 'other minds problem'?",
-    answers: [
-      "The difficulty of connecting multiple AI systems",
-      "The philosophical challenge of determining whether other entities have conscious experiences",
-      "The problem of AI systems interfering with each other",
-      "The challenge of teaching AI about human psychology"
-    ],
-    correctAnswer: 1,
-    category: "Philosophy of Mind"
+    category: "Sentient Vision"
   }
 ];
