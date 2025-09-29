@@ -15,6 +15,9 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        sentient: "bg-sentient-gradient text-glass-white shadow-sentient hover:shadow-glow-pink transition-all duration-300 font-semibold",
+        tech: "bg-tech-gradient text-glass-white shadow-tech hover:shadow-glow-purple transition-all duration-300 font-semibold",
+        quiz: "bg-glass-white/90 text-glass-dark border border-glass-white/30 hover:bg-glass-white hover:shadow-glass transition-all duration-300 backdrop-blur-sm",
       },
       size: {
         default: "h-10 px-4 py-2",

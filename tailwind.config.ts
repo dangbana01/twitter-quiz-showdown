@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +50,22 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        sentient: {
+          pink: "hsl(var(--sentient-pink))",
+          'pink-light': "hsl(var(--sentient-pink-light))",
+          'pink-dark': "hsl(var(--sentient-pink-dark))",
+          coral: "hsl(var(--sentient-coral))",
+        },
+        tech: {
+          purple: "hsl(var(--tech-purple))",
+          blue: "hsl(var(--tech-blue))",
+          cyan: "hsl(var(--neon-cyan))",
+        },
+        glass: {
+          white: "hsl(var(--glass-white))",
+          gray: "hsl(var(--soft-gray))",
+          dark: "hsl(var(--dark-gray))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +76,23 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      backgroundImage: {
+        'sentient-gradient': 'var(--gradient-sentient)',
+        'tech-gradient': 'var(--gradient-tech)',
+        'glass-gradient': 'var(--gradient-glass)',
+        'overlay-gradient': 'var(--gradient-overlay)',
+      },
+      boxShadow: {
+        'sentient': 'var(--shadow-sentient)',
+        'tech': 'var(--shadow-tech)',
+        'glass': 'var(--shadow-glass)',
+        'glow-pink': 'var(--glow-pink)',
+        'glow-purple': 'var(--glow-purple)',
+      },
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
       borderRadius: {
         lg: "var(--radius)",
