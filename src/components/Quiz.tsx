@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, Brain, Zap } from "lucide-react";
 import { quizQuestions } from "@/data/questions";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface QuizProps {
   onComplete: (score: number) => void;
@@ -19,6 +20,8 @@ const Quiz = ({ onComplete, userProfile }: QuizProps) => {
   const [timeLeft, setTimeLeft] = useState(7);
   const [isAnswered, setIsAnswered] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [startTime] = useState(Date.now());
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
   const question = quizQuestions[currentQuestion];
@@ -76,6 +79,47 @@ const Quiz = ({ onComplete, userProfile }: QuizProps) => {
       setShowResult(false);
       setTimeLeft(7);
     } else {
+      handleQuizComplete();
+    }
+  };
+
+  const handleQuizComplete = async () => {
+    const completionTime = Math.floor((Date.now() - startTime) / 1000);
+    setIsSaving(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('save-quiz-result', {
+        body: {
+          twitter_username: userProfile.username,
+          display_name: userProfile.displayName,
+          avatar_url: userProfile.avatar,
+          score,
+          completion_time: completionTime
+        }
+      });
+
+      if (error) {
+        console.error('Error saving quiz result:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save your quiz result. Your score may not appear on the leaderboard.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Quiz Complete!",
+          description: `Your score of ${score}/15 has been saved to the leaderboard!`,
+        });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: "Something went wrong while saving your result.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
       onComplete(score);
     }
   };

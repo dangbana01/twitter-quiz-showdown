@@ -7,23 +7,77 @@ import { Trophy, Timer, Users, Zap } from "lucide-react";
 import sentientLogo from "@/assets/sentient-logo.png";
 import Quiz from "@/components/Quiz";
 import Leaderboard from "@/components/Leaderboard";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState<'home' | 'quiz' | 'leaderboard'>('home');
   const [twitterUsername, setTwitterUsername] = useState('');
   const [userProfile, setUserProfile] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleTwitterLogin = async () => {
-    // TODO: Connect to Supabase for Twitter API integration
-    // For now, show mock profile data
-    setUserProfile({
-      username: twitterUsername,
-      displayName: `@${twitterUsername}`,
-      followers: Math.floor(Math.random() * 10000),
-      following: Math.floor(Math.random() * 1000),
-      tweets: Math.floor(Math.random() * 5000),
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${twitterUsername}`
-    });
+    if (!twitterUsername.trim()) {
+      toast({
+        title: "Username Required",
+        description: "Please enter your Twitter username first!",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('twitter-user', {
+        body: { username: twitterUsername }
+      });
+
+      if (error) {
+        console.error('Error fetching Twitter data:', error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch Twitter profile. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (!data) {
+        toast({
+          title: "User Not Found",
+          description: "Twitter user not found. Please check the username.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setUserProfile({
+        username: data.username,
+        displayName: data.display_name,
+        followers: data.followers_count,
+        following: data.following_count,
+        tweets: data.tweet_count,
+        avatar: data.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.username}`,
+        verified: data.verified
+      });
+
+      toast({
+        title: "Profile Loaded",
+        description: `Welcome, ${data.display_name}!`,
+      });
+
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const startQuiz = () => {
@@ -116,12 +170,12 @@ const Index = () => {
               </div>
               <Button 
                 onClick={handleTwitterLogin}
-                disabled={!twitterUsername.trim()}
+                disabled={!twitterUsername.trim() || isLoading}
                 variant="sentient"
                 size="lg"
                 className="w-full"
               >
-                Connect & View Profile
+                {isLoading ? "Loading Profile..." : "Connect & View Profile"}
               </Button>
             </CardContent>
           </Card>

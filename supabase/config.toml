@@ -1,1 +1,7 @@
 project_id = "svvtebyjlijvtjyvusxa"
+
+[functions.twitter-user]
+verify_jwt = false
+
+[functions.save-quiz-result]
+verify_jwt = false

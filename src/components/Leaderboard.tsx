@@ -4,42 +4,90 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Medal, Award, Home, Timer, RefreshCw } from "lucide-react";
 import sentientLogo from "@/assets/sentient-logo.png";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface LeaderboardProps {
   onBackToHome: () => void;
 }
 
-// Mock leaderboard data - in real app this would come from Supabase
-const mockLeaderboard = [
-  { rank: 1, username: "@ai_researcher", displayName: "AI Researcher", score: 15, time: "3m 42s", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=1" },
-  { rank: 2, username: "@tech_guru", displayName: "Tech Guru", score: 14, time: "4m 12s", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=2" },
-  { rank: 3, username: "@future_mind", displayName: "Future Mind", score: 14, time: "4m 28s", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=3" },
-  { rank: 4, username: "@neural_net", displayName: "Neural Network", score: 13, time: "3m 56s", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=4" },
-  { rank: 5, username: "@sentient_soul", displayName: "Sentient Soul", score: 13, time: "4m 33s", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=5" },
-  { rank: 6, username: "@code_master", displayName: "Code Master", score: 12, time: "4m 01s", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=6" },
-  { rank: 7, username: "@quantum_leap", displayName: "Quantum Leap", score: 12, time: "4m 17s", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=7" },
-  { rank: 8, username: "@digital_sage", displayName: "Digital Sage", score: 11, time: "4m 45s", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=8" }
-];
+// Real-time leaderboard data from Supabase
 
 const Leaderboard = ({ onBackToHome }: LeaderboardProps) => {
+  const [leaderboardData, setLeaderboardData] = useState<any[]>([]);
   const [timeUntilReset, setTimeUntilReset] = useState("29m 42s");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  const fetchLeaderboard = async () => {
+    try {
+      const { data, error } = await supabase.rpc('get_current_leaderboard');
+      
+      if (error) {
+        console.error('Error fetching leaderboard:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load leaderboard data.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setLeaderboardData(data || []);
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: "Something went wrong while loading the leaderboard.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Simulate countdown timer
-    const interval = setInterval(() => {
-      // This would be calculated based on actual reset time in production
-      const minutes = Math.floor(Math.random() * 30);
-      const seconds = Math.floor(Math.random() * 60);
-      setTimeUntilReset(`${minutes}m ${seconds}s`);
-    }, 10000);
+    fetchLeaderboard();
 
-    return () => clearInterval(interval);
+    // Set up real-time subscription
+    const channel = supabase
+      .channel('leaderboard-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'quiz_sessions'
+        },
+        () => {
+          // Refresh leaderboard when new data is inserted
+          fetchLeaderboard();
+        }
+      )
+      .subscribe();
+
+    // Countdown timer
+    const timer = setInterval(() => {
+      const now = new Date();
+      const nextReset = new Date(now);
+      nextReset.setMinutes(Math.ceil(now.getMinutes() / 30) * 30, 0, 0);
+      const diff = nextReset.getTime() - now.getTime();
+      const minutes = Math.floor(diff / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      setTimeUntilReset(`${minutes}m ${seconds}s`);
+    }, 1000);
+
+    return () => {
+      supabase.removeChannel(channel);
+      clearInterval(timer);
+    };
   }, []);
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsRefreshing(true);
-    setTimeout(() => setIsRefreshing(false), 1500);
+    await fetchLeaderboard();
+    setIsRefreshing(false);
   };
 
   const getRankIcon = (rank: number) => {
@@ -93,28 +141,40 @@ const Leaderboard = ({ onBackToHome }: LeaderboardProps) => {
         </div>
 
         {/* Top 3 Podium */}
-        <div className="grid grid-cols-3 gap-4 mb-8 slide-in">
-          {mockLeaderboard.slice(0, 3).map((player, index) => (
+        {isLoading ? (
+          <div className="text-center text-glass-white/70 mb-8">Loading leaderboard...</div>
+        ) : leaderboardData.length === 0 ? (
+          <Card className="glass-card border-0 shadow-glass mb-8">
+            <CardContent className="p-8 text-center">
+              <Trophy className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-glass-dark mb-2">No Quiz Results Yet</h3>
+              <p className="text-muted-foreground">Be the first to take the quiz and claim the top spot!</p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-3 gap-4 mb-8 slide-in">
+            {leaderboardData.slice(0, 3).map((player, index) => (
             <Card key={player.rank} className={`glass-card border-0 ${index === 0 ? 'shadow-sentient transform scale-105' : 'shadow-glass'} transition-transform hover:scale-105`}>
               <CardContent className="p-6 text-center">
                 <div className="mb-4">
                   {getRankIcon(player.rank)}
                 </div>
                 <img 
-                  src={player.avatar} 
-                  alt={player.displayName} 
+                  src={player.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${player.twitter_username}`} 
+                  alt={player.display_name} 
                   className="w-16 h-16 rounded-full mx-auto mb-3 shadow-tech"
                 />
                 <div className="space-y-1">
-                  <h3 className="font-bold text-glass-dark">{player.displayName}</h3>
-                  <p className="text-sm text-muted-foreground">{player.username}</p>
+                  <h3 className="font-bold text-glass-dark">{player.display_name}</h3>
+                  <p className="text-sm text-muted-foreground">@{player.twitter_username}</p>
                   <div className="text-2xl font-black text-sentient-pink">{player.score}/15</div>
-                  <div className="text-xs text-muted-foreground">{player.time}</div>
+                  <div className="text-xs text-muted-foreground">{player.time_display}</div>
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Full Leaderboard */}
         <Card className="glass-card border-0 shadow-sentient slide-in">
@@ -122,13 +182,13 @@ const Leaderboard = ({ onBackToHome }: LeaderboardProps) => {
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-glass-dark">Full Rankings</h2>
               <Badge variant="outline" className="bg-tech-gradient text-glass-white border-0">
-                {mockLeaderboard.length} Players
+                {leaderboardData.length} Players
               </Badge>
             </div>
           </CardHeader>
           <CardContent className="p-0">
             <div className="space-y-1">
-              {mockLeaderboard.map((player) => (
+              {leaderboardData.map((player) => (
                 <div 
                   key={player.rank}
                   className={`flex items-center gap-4 p-4 hover:bg-glass-white/10 transition-colors ${
@@ -139,17 +199,17 @@ const Leaderboard = ({ onBackToHome }: LeaderboardProps) => {
                     {getRankIcon(player.rank)}
                   </div>
                   <img 
-                    src={player.avatar} 
-                    alt={player.displayName} 
+                    src={player.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${player.twitter_username}`} 
+                    alt={player.display_name} 
                     className="w-10 h-10 rounded-full shadow-sm"
                   />
                   <div className="flex-1">
-                    <div className="font-semibold text-glass-dark">{player.displayName}</div>
-                    <div className="text-sm text-muted-foreground">{player.username}</div>
+                    <div className="font-semibold text-glass-dark">{player.display_name}</div>
+                    <div className="text-sm text-muted-foreground">@{player.twitter_username}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-lg font-bold text-sentient-pink">{player.score}/15</div>
-                    <div className="text-xs text-muted-foreground">{player.time}</div>
+                    <div className="text-xs text-muted-foreground">{player.time_display}</div>
                   </div>
                 </div>
               ))}
