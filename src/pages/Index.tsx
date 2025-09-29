@@ -136,7 +136,7 @@ const Index = () => {
           <Card className="glass-card border-0 shadow-glass">
             <CardContent className="p-6 text-center">
               <Zap className="w-8 h-8 text-tech-purple mx-auto mb-2" />
-              <div className="text-2xl font-bold text-glass-dark">15</div>
+              <div className="text-2xl font-bold text-glass-dark">10</div>
               <div className="text-sm text-muted-foreground">Total Questions</div>
             </CardContent>
           </Card>

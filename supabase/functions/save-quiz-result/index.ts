@@ -44,7 +44,7 @@ serve(async (req) => {
         avatar_url,
         score,
         completion_time,
-        total_questions: 15
+        total_questions: 10
       })
       .select()
       .single();

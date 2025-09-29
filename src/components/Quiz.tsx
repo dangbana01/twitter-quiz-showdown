@@ -108,7 +108,7 @@ const Quiz = ({ onComplete, userProfile }: QuizProps) => {
       } else {
         toast({
           title: "Quiz Complete!",
-          description: `Your score of ${score}/15 has been saved to the leaderboard!`,
+          description: `Your score of ${score}/10 has been saved to the leaderboard!`,
         });
       }
     } catch (error) {

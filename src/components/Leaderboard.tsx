@@ -167,7 +167,7 @@ const Leaderboard = ({ onBackToHome }: LeaderboardProps) => {
                 <div className="space-y-1">
                   <h3 className="font-bold text-glass-dark">{player.display_name}</h3>
                   <p className="text-sm text-muted-foreground">@{player.twitter_username}</p>
-                  <div className="text-2xl font-black text-sentient-pink">{player.score}/15</div>
+                  <div className="text-2xl font-black text-sentient-pink">{player.score}/10</div>
                   <div className="text-xs text-muted-foreground">{player.time_display}</div>
                 </div>
               </CardContent>
@@ -208,7 +208,7 @@ const Leaderboard = ({ onBackToHome }: LeaderboardProps) => {
                     <div className="text-sm text-muted-foreground">@{player.twitter_username}</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-bold text-sentient-pink">{player.score}/15</div>
+                    <div className="text-lg font-bold text-sentient-pink">{player.score}/10</div>
                     <div className="text-xs text-muted-foreground">{player.time_display}</div>
                   </div>
                 </div>
